@@ -71,7 +71,8 @@ function formatTime(seconds) {
 
 function startAttack() {
     if (isRunning) return;
-    
+    document.getElementById('soundLoop').volume = 0.2; // Keep it low
+    document.getElementById('soundLoop').play();
     const target = document.getElementById('targetPassword').value;
     if (!target) return alert("Enter a password first!");
     
@@ -225,6 +226,26 @@ function crackSuccess(password, attempts, startTime, isSimulated, failedByLength
     
     // Reset timer and attempts for the final display
     document.getElementById('attempts').innerText = attempts.toLocaleString();
+    
+    // --- AUDIO CONTROL ---
+    const loopAudio = document.getElementById('soundLoop');
+    const successAudio = document.getElementById('soundSuccess');
+    
+    // 1. Stop background loop
+    loopAudio.pause();
+    loopAudio.currentTime = 0; 
+
+    // 2. Play success sound
+    successAudio.play();
+    
+    // 3. Set a timer to stop the success sound after 2 seconds (2000 milliseconds)
+    setTimeout(() => {
+        successAudio.pause();
+        successAudio.currentTime = 0; // Rewind it so it plays fully next time
+    }, 2000); 
+    // --- END AUDIO CONTROL ---
+
+    // Display updates (Your existing logic)
     document.getElementById('timer').innerText = isSimulated ? document.getElementById('crackTime').innerText : `${time}s`;
 
     if (failedByLength) {
