@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BruteForce Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BRUTE<span class="danger">FORCE</span>.IO</h1>
+            <p>Password Complexity Visualizer</p>
+        </header>
+
+        <div class="control-panel">
+            <div class="input-group">
+    <label>Set Target Password (Enter any length):</label>
+    <input type="text" id="targetPassword" placeholder="e.g. MyPassword123!">
+</div>
+            
+            <div class="stats">
+                <p>Status: <span id="status">IDLE</span></p>
+                <p>Attempts: <span id="attempts">0</span></p>
+                <p>Time Elapsed: <span id="timer">0.00s</span></p>
+            </div>
+
+            <div class="stats-full">
+    <p>Target Length: <span id="length">0</span></p>
+    <p>Charset Size: <span id="charset">0</span></p>
+    <p>Entropy: <span id="entropy">0.00 bits</span></p>
+    <p class="time-metric">Combinations: <span id="combinations">0</span></p>
+    <p class="time-metric">Time to Crack: <span id="crackTime">0 seconds</span></p>
+</div>
+
+            <button onclick="startAttack()" id="hackBtn">INITIATE ATTACK</button>
+        </div>
+
+        <div class="terminal" id="terminal">
+            <div class="log-entry">>_ WAITING FOR TARGET...</div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
