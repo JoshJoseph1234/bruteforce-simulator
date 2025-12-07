@@ -2,46 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BruteForce Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>BruteForce Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <canvas id="matrixCanvas"></canvas>
+
     <div class="container">
         <header>
-            <h1>BRUTE<span class="danger">FORCE</span>.IO</h1>
-            <p>Password Complexity Visualizer</p>
+            <h1 class="glitch" data-text="BRUTEFORCE.IO">BRUTEFORCE.IO</h1>
+            <p>Password Entropy & Attack Simulator</p>
         </header>
 
         <div class="control-panel">
             <div class="input-group">
-    <label>Set Target Password (Enter any length):</label>
-    <input type="text" id="targetPassword" placeholder="e.g. MyPassword123!">
-</div>
+                <label>Target Hash Algorithm:</label>
+                <select id="algoSelector">
+                    <option value="20000000000">MD5 (Fast / Insecure)</option>
+                    <option value="1000000000">SHA-256 (Standard)</option>
+                    <option value="50">Bcrypt (Slow / Secure)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Set Target Password:</label>
+                <input type="text" id="targetPassword" placeholder="e.g. MySecretPass123!">
+            </div>
             
-            <div class="stats">
+            <div class="stats-full">
+                <div class="stat-row">
+                    <p>Length: <span id="length">0</span></p>
+                    <p>Charset: <span id="charset">0</span></p>
+                </div>
+                <div class="stat-row">
+                    <p>Entropy: <span id="entropy">0.00 bits</span></p>
+                    <p>Combinations: <span id="combinations">0</span></p>
+                </div>
+                <p class="highlight">Time to Crack: <span id="crackTime">0 seconds</span></p>
                 <p>Status: <span id="status">IDLE</span></p>
                 <p>Attempts: <span id="attempts">0</span></p>
                 <p>Time Elapsed: <span id="timer">0.00s</span></p>
             </div>
 
-            <div class="stats-full">
-    <p>Target Length: <span id="length">0</span></p>
-    <p>Charset Size: <span id="charset">0</span></p>
-    <p>Entropy: <span id="entropy">0.00 bits</span></p>
-    <p class="time-metric">Combinations: <span id="combinations">0</span></p>
-    <p class="time-metric">Time to Crack: <span id="crackTime">0 seconds</span></p>
-</div>
-
             <button onclick="startAttack()" id="hackBtn">INITIATE ATTACK</button>
         </div>
 
         <div class="terminal" id="terminal">
-            <div class="log-entry">>_ WAITING FOR TARGET...</div>
+            <div class="log-entry">>_ SYSTEM READY... WAITING FOR INPUT</div>
         </div>
     </div>
-    <script src="script.js"></script>
-    <audio id="soundLoop" loop src="sounds/scan.mp3"></audio>
 
-<audio id="soundSuccess" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="soundLoop" loop src="sounds/scan.mp3"></audio>
+    <audio id="soundSuccess" src="sounds/success.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
 </body>
 </html>
