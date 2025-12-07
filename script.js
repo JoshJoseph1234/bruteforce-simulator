@@ -349,18 +349,19 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-// --- 3D TILT EFFECT ---
+/// --- 3D TILT EFFECT (DESKTOP ONLY) ---
 const container = document.querySelector('.container');
 
-document.addEventListener('mousemove', (e) => {
-    const xAxis = (window.innerWidth / 2 - e.pageX) / 25; // Divide by 25 to limit rotation
-    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-    
-    // Apply the rotation
-    container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-});
+// We use a "media query" check in JS to disable this on phones
+if (window.matchMedia("(min-width: 768px)").matches) {
+    document.addEventListener('mousemove', (e) => {
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    });
 
-// Reset when mouse leaves window
-document.addEventListener('mouseleave', () => {
-    container.style.transform = `rotateY(0deg) rotateX(0deg)`;
-});
+    // Reset when mouse leaves
+    document.addEventListener('mouseleave', () => {
+        container.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    });
+}
