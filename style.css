@@ -12,6 +12,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden; /* Prevents side scrolling on mobile */
     position: relative;
+    perspective: 1000px;
 }
 
 /* --- MATRIX BACKGROUND --- */
@@ -37,6 +38,8 @@ body {
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
     box-sizing: border-box; /* Ensures padding doesn't break width */
     z-index: 1;
+    position: relative; /* Essential for the scanner to stay inside */
+    overflow: hidden; /* Hides the line when it goes out of bounds */
 }
 
 header { text-align: center; border-bottom: 1px dashed #0f0; margin-bottom: 20px; }
@@ -182,4 +185,74 @@ mix-blend-mode: hard-light;
         );
     }
     100% { background: none; }
+}
+/* --- SUCCESS OVERLAY --- */
+#successOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Highest priority */
+    opacity: 0;
+    pointer-events: none; /* Let clicks pass when hidden */
+    transition: opacity 0.5s ease;
+}
+
+/* When active, it becomes visible */
+#successOverlay.active {
+    opacity: 1;
+    pointer-events: all;
+    background: rgba(0, 20, 0, 0.95);
+}
+
+.lock-icon {
+    font-size: 8rem;
+    animation: unlock-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.access-text {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #0f0;
+    text-shadow: 0 0 20px #0f0;
+    letter-spacing: 5px;
+    margin-top: 20px;
+    animation: flash-text 1s infinite alternate;
+}
+
+@keyframes unlock-pop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes flash-text {
+    0% { opacity: 1; text-shadow: 0 0 20px #0f0; }
+    100% { opacity: 0.5; text-shadow: 0 0 5px #0f0; }
+}
+
+/* Utility to hide it initially */
+.hidden { opacity: 0; pointer-events: none; }
+
+.container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px; /* Thickness of laser */
+    background: #0f0;
+    box-shadow: 0 0 15px #0f0;
+    opacity: 0.5;
+    animation: scan 3s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% { top: -10%; }
+    100% { top: 110%; }
 }

@@ -244,7 +244,18 @@ function crackSuccess(password, attempts, startTime, isSimulated, failedByLength
         successAudio.currentTime = 0; // Rewind it so it plays fully next time
     }, 2000); 
     // --- END AUDIO CONTROL ---
+if (!failedByLength) {
+        // TRIGGER THE NEW ANIMATION
+        const overlay = document.getElementById('successOverlay');
+        overlay.classList.remove('hidden');
+        overlay.classList.add('active');
 
+        // Hide it automatically after 3 seconds so you can see the stats
+        setTimeout(() => {
+            overlay.classList.remove('active');
+            overlay.classList.add('hidden');
+        }, 3000);
+    }
     // Display updates (Your existing logic)
     document.getElementById('timer').innerText = isSimulated ? document.getElementById('crackTime').innerText : `${time}s`;
 
@@ -336,4 +347,20 @@ setInterval(drawMatrix, 30);
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+});
+
+// --- 3D TILT EFFECT ---
+const container = document.querySelector('.container');
+
+document.addEventListener('mousemove', (e) => {
+    const xAxis = (window.innerWidth / 2 - e.pageX) / 25; // Divide by 25 to limit rotation
+    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+    
+    // Apply the rotation
+    container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+});
+
+// Reset when mouse leaves window
+document.addEventListener('mouseleave', () => {
+    container.style.transform = `rotateY(0deg) rotateX(0deg)`;
 });
