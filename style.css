@@ -115,63 +115,71 @@ button:hover { background: #fff; box-shadow: 0 0 15px #0f0; }
 .log-entry { margin-bottom: 2px; opacity: 0.8; word-wrap: break-word; }
 .match { color: #fff; background-color: #008000; font-weight: bold; }
 
-/* --- GLITCH EFFECT --- */
-.glitch {
-    position: relative;
-    color: #fff;
-    font-size: 2.5rem;
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin: 10px 0;
-    text-shadow: 2px 2px 0px #0f0;
-}
-
-/* Red Ghost */
-.glitch::before {
-    content: attr(data-text);
-    position: absolute;
-    left: -2px;
-    text-shadow: 1px 0 red;
+/* --- CORRUPTED DISPLAY ARTIFACTS --- */
+.screen-corruption {
+    position: fixed;
     top: 0;
-    color: white;
-    background: transparent; /* Changed to transparent */
-    overflow: hidden;
-    clip: rect(0, 900px, 0, 0);
-    animation: noise-anim-2 3s infinite linear alternate-reverse;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999; /* On top of everything */
+    pointer-events: none; /* Let clicks pass through */
+    opacity: 0.6; /* Semi-transparent static */
+    animation: artifact-loop 4s infinite; /* Glitch happens every 4 seconds */
+    background-size: 100% 100%;
+mix-blend-mode: hard-light;
 }
 
-/* Blue Ghost */
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 2px;
-    text-shadow: -1px 0 blue;
-    top: 0;
-    color: white;
-    background: transparent; /* Changed to transparent */
-    overflow: hidden;
-    clip: rect(0, 900px, 0, 0);
-    animation: noise-anim 2s infinite linear alternate-reverse;
-}
+@keyframes artifact-loop {
+    /* 0% to 92%: DO NOTHING (Clean Screen) */
+    0% { background: none; }
+    92% { background: none; }
 
-@keyframes noise-anim {
-    0% { clip: rect(20px, 9999px, 11px, 0); }
-    20% { clip: rect(68px, 9999px, 94px, 0); }
-    40% { clip: rect(10px, 9999px, 35px, 0); }
-    60% { clip: rect(80px, 9999px, 5px, 0); }
-    100% { clip: rect(50px, 9999px, 80px, 0); }
-}
+    /* 93%: A thin noise line at the TOP */
+    93% { 
+        background: linear-gradient(
+            to bottom,
+            transparent 10%,
+            rgba(255, 255, 255, 0.8) 10%, 
+            rgba(0, 0, 0, 0.9) 10.5%, 
+            transparent 11%
+        );
+    }
 
-@keyframes noise-anim-2 {
-    0% { clip: rect(80px, 9999px, 10px, 0); }
-    20% { clip: rect(10px, 9999px, 80px, 0); }
-    40% { clip: rect(40px, 9999px, 20px, 0); }
-    100% { clip: rect(30px, 9999px, 90px, 0); }
-}
+    /* 95%: A thick block of static in the MIDDLE */
+    95% { 
+        background: linear-gradient(
+            to bottom,
+            transparent 40%,
+            rgba(255, 255, 255, 0.2) 40%, 
+            rgba(200, 255, 200, 0.6) 43%, 
+            transparent 43%
+        );
+    }
 
-/* --- MOBILE ADJUSTMENTS --- */
-@media (max-width: 600px) {
-    .glitch { font-size: 1.8rem; }
-    .container { width: 95%; padding: 15px; }
-    .stats-full { font-size: 0.8rem; }
+    /* 97%: A noise line at the BOTTOM */
+    97% { 
+        background: linear-gradient(
+            to bottom,
+            transparent 85%,
+            rgba(255, 255, 255, 0.9) 85%, 
+            rgba(0, 0, 0, 0.9) 85.5%, 
+            transparent 86%
+        );
+    }
+    
+    /* 98%: Clean again */
+    98% { background: none; }
+
+    /* 99%: One last quick flash */
+    99% { 
+        background: linear-gradient(
+            to bottom,
+            transparent 25%,
+            rgba(255, 255, 255, 0.5) 25%, 
+            rgba(0, 0, 0, 0.8) 25.2%, 
+            transparent 26%
+        );
+    }
+    100% { background: none; }
 }
